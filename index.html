@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certified Generative & Agentic AI Developer - Course Tracker</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        h1 { margin: 0; font-size: 2.2rem; }
+        .subtitle { opacity: 0.9; margin-top: 10px; font-size: 1.1rem; }
+
+        /* Banner Image Section (moved to page end; use <img> for full visibility) */
+        .banner-image {
+            margin-bottom: 30px;
+        }
+
+        .banner-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Course Info Section */
+        .course-info {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .course-info h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .course-info p {
+            color: var(--text);
+            line-height: 1.8;
+            margin: 0 0 15px 0;
+        }
+
+        .learning-outcomes {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .learning-outcomes h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .learning-outcomes ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .learning-outcomes li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text);
+            line-height: 1.6;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .learning-outcomes li:last-child {
+            border-bottom: none;
+        }
+
+        .learning-outcomes li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Career Roadmap (reuses card styling) */
+        .career-roadmap {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        /* Dashboard Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-bar-bg {
+            background-color: var(--border);
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background-color: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Modules List */
+        .module {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .module:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .module-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            user-select: none;
+        }
+
+        .module-header:hover {
+            background-color: #f8fafc;
+        }
+
+        .module-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-status {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .module-content {
+            display: none;
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .module.active .module-content {
+            display: block;
+        }
+
+        .module-desc {
+            font-style: italic;
+            color: var(--text-light);
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        /* Checkbox Items */
+        .topic-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .topic-item:last-child { border-bottom: none; }
+
+        .checkbox-wrapper {
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .topic-label {
+            cursor: pointer;
+        }
+
+        .completed-text {
+            text-decoration: line-through;
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .reset-btn {
+            background: #ef4444;
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.15);
+        }
+
+        .reset-btn:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Certified Generative & Agentic AI Developer</h1>
+        <div class="subtitle">From Python Foundations to Autonomous Multi-Agent Systems</div>
+    </header>
+
+    <div class="course-info">
+        <h2>Course Description</h2>
+        <p>This comprehensive specialization is designed to take students from absolute beginners in programming to industry-ready AI Engineers capable of building the next generation of intelligent software.</p>
+        <p>Moving beyond simple chatbots, this course focuses on the engineering rigor required to build <strong>Autonomous AI Agents</strong> and <strong>RAG (Retrieval Augmented Generation)</strong> systems. Students will master the full stack of modern AI: from foundational Python and Machine Learning to cutting-edge topics like <strong>Model Context Protocol (MCP)</strong>, <strong>DSPy</strong>, <strong>Local LLM Inference</strong>, and <strong>Agentic Orchestration</strong> with LangGraph and CrewAI. The curriculum culminates in deployment strategies, teaching students how to ship secure, scalable, and evaluated AI applications using Docker and FastAPI.</p>
+    </div>
+
+    <div class="learning-outcomes">
+        <h2>Key Learning Outcomes</h2>
+        <p style="margin-bottom: 20px; color: var(--text-light);">By the end of this course, students will be able to:</p>
+        <ul>
+            <li><strong>Develop robust Python applications</strong> and perform complex data analysis using Pandas and NumPy.</li>
+            <li><strong>Build and train Neural Networks</strong> using PyTorch/TensorFlow and understand the Transformer architecture powering LLMs.</li>
+            <li><strong>Engineer advanced prompts</strong> using techniques like Chain of Thought (CoT) and programmatic optimization with <strong>DSPy</strong>.</li>
+            <li><strong>Run Large Language Models locally</strong> using Ollama to build cost-effective, private AI solutions.</li>
+            <li><strong>Architect RAG Pipelines</strong> that connect LLMs to proprietary data using Vector Databases (Pinecone, ChromaDB) and Hybrid Search.</li>
+            <li><strong>Design Autonomous AI Agents</strong> that can use tools, manage memory, and collaborate in multi-agent environments using <strong>LangGraph</strong> and <strong>CrewAI</strong>.</li>
+            <li><strong>Fine-tune LLMs</strong> (LoRA/QLoRA) for specific domain tasks.</li>
+            <li><strong>Deploy AI Applications</strong> to production using <strong>FastAPI</strong>, <strong>Docker</strong>, and cloud environments, ensuring security and reliability through rigorous evaluation (Ragas/DeepEval).</li>
+        </ul>
+    </div>
+
+    <div class="career-roadmap">
+        <h2>Career Roadmap</h2>
+        <p>Upon successful completion of this course and its projects, students will be qualified for the following roles:</p>
+        <ol>
+            <li><strong>Generative AI Engineer:</strong> Building RAG pipelines and custom LLM applications.</li>
+            <li><strong>AI Agent Developer:</strong> Specializing in autonomous workflows and multi-agent orchestration.</li>
+            <li><strong>AI Application Developer:</strong> Full-stack development of AI-powered web apps.</li>
+            <li><strong>Machine Learning Engineer (NLP Focus):</strong> Fine-tuning and deploying language models.</li>
+            <li><strong>AI Solutions Architect:</strong> Designing enterprise-grade AI infrastructure and integration.</li>
+        </ol>
+    </div>
+
+    <div class="banner-image">
+        <img src="banner-back.png" alt="Course Banner">
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <span class="stat-value" id="progress-percent">0%</span>
+            <span class="stat-label">Completion</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="days-count">0</span>
+            <span class="stat-label">Days Learning</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="modules-completed">0/12</span>
+            <span class="stat-label">Modules Done</span>
+        </div>
+    </div>
+
+    <div class="progress-wrapper">
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:600; font-size:0.9rem;">
+            <span>Overall Progress</span>
+            <span id="topics-fraction">0/0 Topics</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="main-progress-bar"></div>
+        </div>
+    </div>
+
+    <div id="course-content">
+        </div>
+
+    <footer>
+        <p>Keep going! Consistency is key.</p>
+        <button class="reset-btn" onclick="resetProgress()">Reset All Progress</button>
+    </footer>
+</div>
+
+<script>
+    // --- COURSE DATA ---
+    const courseData = [
+        {
+            title: "Module 1: Python & Data Foundations",
+            desc: "Build the bedrock of your engineering career. This module ensures you are fluent in Python, the lingua franca of AI, and can manipulate data with precision before feeding it into models.",
+            topics: [
+                "Python Developer: Syntax, Control Flow, OOP Basics, File I/O, DateTime",
+                "Data Engineering Stack: NumPy (Math), Pandas (Data Manipulation), Scikit-Learn (Preprocessing)",
+                "Capstone Project: Build an Exploratory Data Analysis (EDA) dashboard revealing trends and insights from a raw dataset"
+            ]
+        },
+        {
+            title: "Module 2: Machine Learning Fundamentals",
+            desc: "Understand the 'learning' in Machine Learning. We bridge the gap between mathematics and code, enabling you to build predictive models and wrap them in user-friendly interfaces.",
+            topics: [
+                "Core Concepts: Mathematics for ML, Types of Learning (Supervised/Unsupervised)",
+                "Standard Models: Regression, Classification, and Clustering using Scikit-Learn",
+                "Frontend Engineering: Building interactive ML web apps with Streamlit and Gradio",
+                "Project: Develop a functional Machine Learning application with a web-based UI"
+            ]
+        },
+        {
+            title: "Module 3: Deep Learning & Neural Networks",
+            desc: "Dive into the architecture of the brain. This module covers the transition from classical ML to Deep Learning, establishing the neural foundations necessary to understand how GenAI works.",
+            topics: [
+                "Neural Architectures: Artificial Neural Networks (ANN), CNNs (Vision), RNNs & LSTMs (Sequence History)",
+                "Deep Learning Libraries: Introduction to PyTorch and TensorFlow",
+                "Project: Build and train a Neural Network from scratch",
+                "Project: Create a Deep Learning-powered application with a standard model and UI"
+            ]
+        },
+        {
+            title: "Module 4: Generative AI Fundamentals",
+            desc: "Enter the era of Generative AI. We deconstruct the Transformer architecture and explore the vast landscape of proprietary and open-source models.",
+            topics: [
+                "Theory: Transformers, Encoders/Decoders, Attention Mechanisms",
+                "The LLM Landscape: Evaluation metrics, SLMs (Small Language Models), VLMs (Vision Language Models)",
+                "API Mastery: Working with OpenAI, Google Gemini, Anthropic Claude, and Groq (High-speed inference)",
+                "Multimodality: Handling Image, Video, and Document inputs",
+                "Project: Build a multi-turn, multi-model Chatbot capable of handling diverse media inputs"
+            ]
+        },
+        {
+            title: "Module 5: Advanced Prompt Engineering",
+            desc: "Move beyond basic chatting. Learn to program the model using advanced prompting strategies and optimization frameworks used in production systems.",
+            topics: [
+                "Prompting Patterns: Zero/Single/Multi-shot, Chain of Thought (CoT), Tree of Thoughts (ToT)",
+                "System Control: Role Prompting, System Instructions, JSON/Structured Output enforcement",
+                "Hyperparameters: Temperature, Top-p, Top-k, Decoding strategies",
+                "Prompt Optimization: Introduction to DSPy (Declarative Self-Improving Language Programs)"
+            ]
+        },
+        {
+            title: "Module 6: Running LLMs Locally",
+            desc: "Take control of your infrastructure. Learn to run powerful models on your own hardware to save costs and ensure data privacy—a critical skill for prototyping agents.",
+            topics: [
+                "Local Inference: Hardware requirements and setup",
+                "Tools: Mastering Ollama for local model management",
+                "Project: Build a fully offline GenAI application running on your local machine"
+            ]
+        },
+        {
+            title: "Module 7: RAG (Retrieval Augmented Generation)",
+            desc: "Solve the 'hallucination' problem. This module teaches you how to give LLMs access to your private data, a requirement for almost every enterprise AI application.",
+            topics: [
+                "The RAG Pipeline: Data Ingestion, Chunking Strategies, and Embedding Models",
+                "Vector Databases: FAISS, ChromaDB, and Cloud-Native solutions (Pinecone, Weaviate)",
+                "Advanced Retrieval: Hybrid Search (Keyword + Semantic), Re-ranking, and Query Transformation",
+                "Tools: Deep dive into LangChain and LlamaIndex",
+                "Project: Build a Document RAG Chatbot that can accurately answer questions from uploaded PDF/Text files"
+            ]
+        },
+        {
+            title: "Module 8: AI Agents & Architectures",
+            desc: "From 'Chatting' to 'Doing'. Learn to build autonomous systems that can plan, reason, and execute tasks using tools and memory.",
+            topics: [
+                "Core Concepts: Agency, Tool use, and Planning loops (ReAct)",
+                "Protocols: Model Context Protocol (MCP) and Agent-to-Agent (A2A) communication",
+                "Context Engineering: Managing Long-term Memory and Sessions",
+                "Knowledge Graphs: Enhancing agent reasoning with structured data",
+                "Project: Build a Multi-Agent System from scratch (without frameworks) to understand the internal mechanics"
+            ]
+        },
+        {
+            title: "Module 9: Advanced Agentic Frameworks",
+            desc: "Master the tools of the trade. We explore the high-level frameworks used to orchestrate complex multi-agent teams for enterprise use cases.",
+            topics: [
+                "The Ecosystem: LangGraph (Stateful Orchestration) and CrewAI (Role-playing Agents)",
+                "Alternatives: Microsoft Autogen, AutoGPT, IBM Agent Bee",
+                "Agentic RAG: Combining Agents with RAG for self-correcting retrieval",
+                "Project: Develop an Advanced Multi-Agent System with self-reflection, looping, and complex tool usage"
+            ]
+        },
+        {
+            title: "Module 10: Fine-Tuning LLMs",
+            desc: "Customize the model itself. Learn when and how to retrain models for specific domains using efficient techniques.",
+            topics: [
+                "Techniques: Full Fine-Tuning vs. PEFT (Parameter Efficient Fine-Tuning)",
+                "Optimization: LoRA (Low-Rank Adaptation) and QLoRA",
+                "RLHF: Reinforcement Learning from Human Feedback concepts",
+                "Project: Fine-tune an open-source model for a specific niche, publish it to Hugging Face, and deploy it"
+            ]
+        },
+        {
+            title: "Module 11: Model Deployment & MLOps",
+            desc: "Turn prototypes into products. Learn the software engineering required to expose your AI models to the world securely and scalably.",
+            topics: [
+                "Backend Engineering: FastAPI fundamentals and REST API development",
+                "Containerization: Using Docker to containerize AI applications",
+                "MLOps: Model Versioning, CI/CD pipelines, and Cloud Deployment",
+                "Edge AI: Optimizing models for edge devices",
+                "Project: Full-stack deployment of an AI Agent/App (Backend + Frontend + Docker)"
+            ]
+        },
+        {
+            title: "Module 12: AI Reliability, Safety & Compliance",
+            desc: "Ensure your AI is ready for the real world. We cover the critical aspects of evaluation, security, and ethics that enterprises demand.",
+            topics: [
+                "Eval-Driven Development: Using Ragas, DeepEval, and Arize Phoenix to metricize performance",
+                "Security: Prompt Injection attacks, Jailbreaking, and Defense strategies",
+                "Compliance: Data Privacy, GDPR, HIPAA, and SOX considerations in AI"
+            ]
+        }
+    ];
+
+    // --- APP LOGIC ---
+    
+    // Initialize State
+    let state = {
+        checkedItems: {}, // Format: "modIndex-topicIndex": true
+        startDate: null
+    };
+
+    // Load from LocalStorage
+    function loadState() {
+        const saved = localStorage.getItem('aiCourseTracker');
+        if (saved) {
+            state = JSON.parse(saved);
+        }
+    }
+
+    function saveState() {
+        localStorage.setItem('aiCourseTracker', JSON.stringify(state));
+    }
+
+    function toggleModule(header) {
+        header.parentElement.classList.toggle('active');
+    }
+
+    function calculateStats() {
+        let totalTopics = 0;
+        let completedTopics = 0;
+        let modulesDone = 0;
+
+        courseData.forEach((mod, mIndex) => {
+            let modTopicsDone = 0;
+            mod.topics.forEach((topic, tIndex) => {
+                totalTopics++;
+                if (state.checkedItems[`${mIndex}-${tIndex}`]) {
+                    completedTopics++;
+                    modTopicsDone++;
+                }
+            });
+            // Update Module Status Badge in UI
+            const badge = document.getElementById(`mod-badge-${mIndex}`);
+            if (badge) {
+                const percent = Math.round((modTopicsDone / mod.topics.length) * 100);
+                badge.textContent = `${percent}% Done`;
+                badge.style.background = percent === 100 ? '#dcfce7' : '#f1f5f9';
+                badge.style.color = percent === 100 ? '#166534' : '#64748b';
+            }
+            if (modTopicsDone === mod.topics.length) modulesDone++;
+        });
+
+        const overallPercent = totalTopics === 0 ? 0 : Math.round((completedTopics / totalTopics) * 100);
+
+        // Update UI Stats
+        document.getElementById('progress-percent').textContent = `${overallPercent}%`;
+        document.getElementById('main-progress-bar').style.width = `${overallPercent}%`;
+        document.getElementById('modules-completed').textContent = `${modulesDone}/${courseData.length}`;
+        document.getElementById('topics-fraction').textContent = `${completedTopics}/${totalTopics} Topics`;
+
+        // Days Calculation
+        if (state.startDate) {
+            const start = new Date(state.startDate);
+            const now = new Date();
+            const diffTime = Math.abs(now - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            document.getElementById('days-count').textContent = diffDays;
+        } else {
+            document.getElementById('days-count').textContent = '0';
+        }
+    }
+
+    function handleCheck(mIndex, tIndex) {
+        const key = `${mIndex}-${tIndex}`;
+        const checkbox = document.getElementById(`chk-${key}`);
+        const label = document.getElementById(`lbl-${key}`);
+        
+        if (checkbox.checked) {
+            state.checkedItems[key] = true;
+            label.classList.add('completed-text');
+            
+            // Start Timer if first interaction
+            if (!state.startDate) {
+                state.startDate = new Date().toISOString();
+            }
+        } else {
+            delete state.checkedItems[key];
+            label.classList.remove('completed-text');
+        }
+        
+        saveState();
+        calculateStats();
+    }
+
+    function renderCourse() {
+        const container = document.getElementById('course-content');
+        container.innerHTML = '';
+
+        courseData.forEach((mod, mIndex) => {
+            const moduleDiv = document.createElement('div');
+            moduleDiv.className = 'module';
+            
+            // Topics HTML
+            let topicsHtml = '';
+            mod.topics.forEach((topic, tIndex) => {
+                const key = `${mIndex}-${tIndex}`;
+                const isChecked = state.checkedItems[key] ? 'checked' : '';
+                const textClass = state.checkedItems[key] ? 'completed-text' : '';
+                
+                topicsHtml += `
+                    <div class="topic-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="chk-${key}" 
+                                onchange="handleCheck(${mIndex}, ${tIndex})" ${isChecked}>
+                        </div>
+                        <label for="chk-${key}" id="lbl-${key}" class="topic-label ${textClass}">
+                            ${topic}
+                        </label>
+                    </div>
+                `;
+            });
+
+            moduleDiv.innerHTML = `
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div class="module-title">
+                        <span>${mod.title}</span>
+                    </div>
+                    <span class="module-status" id="mod-badge-${mIndex}">0% Done</span>
+                </div>
+                <div class="module-content">
+                    <p class="module-desc">${mod.desc}</p>
+                    ${topicsHtml}
+                </div>
+            `;
+            container.appendChild(moduleDiv);
+        });
+    }
+
+    function resetProgress() {
+        if(confirm("Are you sure you want to reset all progress? This cannot be undone.")) {
+            localStorage.removeItem('aiCourseTracker');
+            state = { checkedItems: {}, startDate: null };
+            location.reload();
+        }
+    }
+
+    // Init
+    loadState();
+    renderCourse();
+    calculateStats();
+
+</script>
+
+</body>
+</html>
